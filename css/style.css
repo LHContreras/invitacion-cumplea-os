@@ -212,10 +212,15 @@ footer {
 }
 .logos-slide {
   animation: 50s slide infinite linear;
+  will-change: transform;
+
 }
 .img {
   height: 400px;
   margin: 0 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 .logos::before {
   position: absolute;
@@ -332,13 +337,21 @@ footer {
 
 /* Animacion Slide*/
 @keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+/*@keyframes slide {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-100%);
   }
-}
+}*/
 /* RESPONSIVE ADICIONAL */
 @media (max-width: 500px) {
   .reproductor-simple {

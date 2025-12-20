@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Slider
-let logos = document.getElementById("slider").cloneNode(true);
-document.getElementById("logos").appendChild(logos);
+//let logos = document.getElementById("slider").cloneNode(true);
+//document.getElementById("logos").appendChild(logos);
 
 // Año actual
 document.getElementById("currentYear").textContent = new Date().getFullYear();
