@@ -1,244 +1,184 @@
-const partyDate = new Date("January 09 2026 22:00:00").getTime();
+//Reproductor
+function initMusicPlayer() {
+  const audio = document.getElementById("miCancion");
+  const playPauseBtn = document.getElementById("playPauseBtn");
+  const volumenSlider = document.getElementById("volumenSlider");
+  const volumenPorcentaje = document.getElementById("volumenPorcentaje");
+  const tiempoActual = document.getElementById("tiempoActual");
+  const duracionTotal = document.getElementById("duracionTotal");
+  const iconPlay = document.getElementById("btnPlay");
+  const iconPause = document.getElementById("btnPause");
 
-const dias = document.getElementById("days");
-const horas = document.getElementById("hours");
-const minutos = document.getElementById("minutes");
-const segundos = document.getElementById("seconds");
+  if (!audio) {
+    console.error("Elemento de audio no encontrado");
+    return;
+  }
 
-const countdownInterval = setInterval(function () {
+  // Configuración inicial
+  audio.volume = 0.3;
+  audio.preload = "auto";
+
+  // Formatear tiempo
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return "0:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  }
+
+  // Actualizar UI
+  function actualizarUI(estaReproduciendo) {
+    if (estaReproduciendo) {
+      iconPlay.style.display = "none";
+      iconPause.style.display = "inline";
+      playPauseBtn.style.background =
+        "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)";
+    } else {
+      iconPlay.style.display = "inline";
+      iconPause.style.display = "none";
+      playPauseBtn.style.background =
+        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+    }
+  }
+
+  // Estado inicial - ocultar pausa
+  actualizarUI(false);
+
+  // Eventos
+audio.addEventListener("loadedmetadata", function () {
+    duracionTotal.textContent = formatTime(audio.duration);
+});
+
+  audio.addEventListener("timeupdate", function () {
+    tiempoActual.textContent = formatTime(audio.currentTime);
+  });
+
+  playPauseBtn.addEventListener("click", function () {
+    if (audio.paused) {
+      audio
+        .play()
+        .then(() => {
+          actualizarUI(true);
+        })
+        .catch((error) => {
+          console.error("Error al reproducir:", error);
+          // Mostrar mensaje de error al usuario si es necesario
+          this.title =
+            "No se pudo reproducir la música. Haz clic para intentar nuevamente.";
+        });
+    } else {
+      audio.pause();
+      actualizarUI(false);
+    }
+  });
+
+  volumenSlider.addEventListener("input", function () {
+    const valor = parseFloat(this.value);
+    audio.volume = valor;
+    volumenPorcentaje.textContent = Math.round(valor * 100) + "%";
+
+    const volIcon = document.querySelector(".vol-icon");
+    if (volIcon) {
+      if (valor === 0) {
+        volIcon.textContent = "🔇";
+      } else if (valor < 0.5) {
+        volIcon.textContent = "🔉";
+      } else {
+        volIcon.textContent = "🔊";
+      }
+    }
+  });
+
+  audio.addEventListener("ended", function () {
+    audio.currentTime = 0;
+    audio.play();
+  });
+
+  // Autoplay con manejo de errores
+  setTimeout(() => {
+    audio
+      .play()
+      .then(() => {
+        actualizarUI(true);
+      })
+      .catch(() => {
+        playPauseBtn.title = "Click aquí para activar la música";
+        playPauseBtn.style.opacity = "0.8";
+        console.log(
+          "Autoplay bloqueado por el navegador. Esperando interacción del usuario."
+        );
+      });
+  }, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", initMusicPlayer);
+
+// ===== CUENTA REGRESIVA =====
+const partyDate = new Date("January 09, 2026 20:00:00").getTime();
+
+// Actualizar cuenta regresiva cada segundo
+const countdownFunction = setInterval(function () {
   const now = new Date().getTime();
+  const timeLeft = partyDate - now;
 
-  const distance = partyDate - now;
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  // Calcular días, horas, minutos y segundos
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
-    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
+  // Mostrar resultados
   document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
   document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
   document.getElementById("minutes").innerHTML =
     minutes < 10 ? "0" + minutes : minutes;
   document.getElementById("seconds").innerHTML =
     seconds < 10 ? "0" + seconds : seconds;
-});
 
-// galeria
+  // Si la cuenta regresiva termina
+  if (timeLeft < 0) {
+    clearInterval(countdownFunction);
+    document.getElementById("countdown").innerHTML =
+      "<div class='text-center'><h2>¡La fiesta ya comenzó!</h2><p>¡Ven a celebrar con nosotros!</p></div>";
+  }
+}, 1000);
 
-let currentSlide = 0;
-const slides = document.querySelectorAll(".carousel-slide");
-const indicators = document.querySelectorAll(".indicator");
-const totalSlides = slides.length;
+// Copiar Datos
+document.addEventListener("DOMContentLoaded", function () {
+  const copyBtn = document.getElementById("copyBtn");
+  const copyIcon = document.getElementById("copyIcon");
+  const checkIcon = document.getElementById("checkIcon");
 
-function showSlide(index) {
-  //oculta todos las slides
-  slides.forEach((slide) => {
-    slide.classList.remove("active");
-    slide.style.opacity = "0";
-    slide.style.zIndex = "1";
-  });
-  indicators.forEach((indicator) => indicator.classList.remove("active"));
-
-  //muestra la slide seleccionada
-  const activeSlide = slides[index];
-
-  setTimeout(() => {
-    activeSlide.classList.add("active");
-    activeSlide.style.opacity = "1";
-    activeSlide.style.zIndex = "10";
-  }, 50);
-  indicators[index].classList.add("active");
-  currentSlide = index;
-}
-
-function nextSlide() {
-  let nextIndex = (currentSlide + 1) % totalSlides;
-  showSlide(nextIndex);
-}
-
-setInterval(nextSlide, 4000); // Cambia de slide cada 5 segundos
-
-//controles de indicadores
-indicators.forEach((indicator, index) => {
-  indicator.addEventListener("click", () => {
-    showSlide(index);
-  });
-});
-
-showSlide(0); // Mostrar la primera slide al cargar la página
-
-// Funcion para copiar
-document.querySelectorAll(".copy-btn, .copy-btn-simple").forEach((button) => {
-  button.addEventListener("click", async function () {
-    const targetId = this.getAttribute("data-copy");
-    const targetElement = document.getElementById(targetId);
-    const textToCopy = targetElement.textContent;
-
-    // guardar estado original
-    const originalContent = this.innerHTML || this.textContent;
-
+  copyBtn.addEventListener("click", async function () {
     try {
-      // usar clipboar API
-      await navigator.clipboard.writeText(textToCopy);
+      // Obtener el texto a copiar del span
+      const alisText = document.getElementById("aliasSimple").textContent;
 
-      //exito: mostrar check
-      this.classList.add("copied");
+      // Usar la clipboard API
+      await navigator.clipboard.writeText(alisText);
 
-      if (this.classList.contains("copy-btn-simple")) {
-        this.textContent = "✓";
-      }
+      //cambiar iconos
+      copyIcon.classList.add("d-none");
+      checkIcon.classList.remove("d-none");
 
-      targetElement.style.backgroundColor = "#e8f5e9";
-      targetElement.style.transition = "background-color 0.3s";
-
-      //restaurar despues de 2 segundos
+      //Restaurar icono
       setTimeout(() => {
-        this.classList.remove("copied");
-        if (this.classList.contains("copy-btn-simple")) {
-          this.textContent = "📋";
-        }
+        checkIcon.classList.add("d-none");
+        copyIcon.classList.remove("d-none");
       }, 2000);
+
+      console.log("Texto copiado", alisText);
     } catch (err) {
-      console.warn("Error al copiar: ", err);
-
-      // seleccionar para copia manual
-      const range = document.createRange();
-      range.selectNodeContents(targetElement);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      // cambiar boton para indicar seleccion
-      this.classList.add("copied");
-      this.title = "¡Texto seleccionado! Presiona Ctrl+C para copiar.";
-
-      if (this.classList.contains("copy-btn-simple")) {
-        this.textContent = "✓";
-      }
-
-      // restaurar despues de 2 segundos
-      setTimeout(() => {
-        this.classList.remove("copied");
-        this.title = "Copiar al portapapeles";
-        if (this.classList.contains("copy-btn-simple")) {
-          this.textContent = "📋";
-        }
-        selection.removeAllRanges();
-      }, 2000);
+      console.log("Error al copiar: ", err);
     }
   });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // ===== PARTE DEL CÓDIGO 2 (REPRODUCTOR) =====
-    const audio = document.getElementById('miCancion');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const volumenSlider = document.getElementById('volumenSlider');
-    const volumenPorcentaje = document.getElementById('volumenPorcentaje');
-    const tiempoActual = document.getElementById('tiempoActual');
-    const duracionTotal = document.getElementById('duracionTotal');
-    const iconPlay = document.querySelector('.icon-play');
-    const iconPause = document.querySelector('.icon-pause');
-    
-    // Inicializar
-    audio.volume = 0.3;
-    audio.preload = 'auto';  // ← Del Código 1
-    
-    // Actualizar duración
-    audio.addEventListener('loadedmetadata', function() {
-        duracionTotal.textContent = formatTime(audio.duration);
-    });
-    
-    // Actualizar tiempo
-    audio.addEventListener('timeupdate', function() {
-        tiempoActual.textContent = formatTime(audio.currentTime);
-    });
-    
-    // Play/Pause
-    playPauseBtn.addEventListener('click', function() {
-        if (audio.paused) {
-            audio.play();
-            actualizarUI(true);
-        } else {
-            audio.pause();
-            actualizarUI(false);
-        }
-    });
-    
-    // Volumen
-    volumenSlider.addEventListener('input', function() {
-        const valor = parseFloat(this.value);
-        audio.volume = valor;
-        volumenPorcentaje.textContent = Math.round(valor * 100) + '%';
-        
-        const volIcon = document.querySelector('.vol-icon');
-        if (valor === 0) {
-            volIcon.textContent = '🔇';
-        } else if (valor < 0.5) {
-            volIcon.textContent = '🔉';
-        } else {
-            volIcon.textContent = '🔊';
-        }
-    });
-    
-    // Loop
-    audio.addEventListener('ended', function() {
-        audio.currentTime = 0;
-        audio.play();
-    });
-    
-    // Función auxiliar
-    function formatTime(seconds) {
-        if (isNaN(seconds)) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-    
-    // Función para actualizar UI
-    function actualizarUI(estaReproduciendo) {
-        if (estaReproduciendo) {
-            iconPlay.style.display = 'none';
-            iconPause.style.display = 'inline';
-            playPauseBtn.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
-        } else {
-            iconPlay.style.display = 'inline';
-            iconPause.style.display = 'none';
-            playPauseBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        }
-    }
-    
-    // ===== PARTE DEL CÓDIGO 1 (AUTOPLAY) =====
-    // Intentar autoplay después de 1 segundo
-    setTimeout(() => {
-        audio.play().then(() => {
-            // Éxito: actualizar UI
-            actualizarUI(true);
-        }).catch(error => {
-            // Falló: configurar listeners para activar con interacción
-            const activarMusica = () => {
-                audio.play().then(() => {
-                    actualizarUI(true);
-                });
-                // Remover listeners después de activar
-                document.removeEventListener('click', activarMusica);
-                document.removeEventListener('touchstart', activarMusica);
-                document.removeEventListener('keydown', activarMusica);
-            };
-            
-            // Agregar listeners para cualquier interacción
-            document.addEventListener('click', activarMusica);
-            document.addEventListener('touchstart', activarMusica);
-            document.addEventListener('keydown', activarMusica);
-            
-            // Mostrar indicación sutil en el botón
-            playPauseBtn.title = "Click aquí para activar la música";
-            playPauseBtn.style.opacity = "0.8";
-        });
-    }, 1000);
-});
+// Slider
+let logos = document.getElementById("slider").cloneNode(true);
+document.getElementById("logos").appendChild(logos);
 
-// copyright year
-document.getElementById('currentYear').textContent = new Date().getFullYear();
+// Año actual
+document.getElementById("currentYear").textContent = new Date().getFullYear();

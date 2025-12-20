@@ -27,55 +27,36 @@ body {
       transparent 20%
     );
   overflow-x: hidden;
-  width: 100%;
-  min-height: 100vh; /* Ocupa al menos toda la altura de la pantalla */
-  display: flex;
-  flex-direction: column; /* Para estructura vertical */
-}
-
-h1,
-h2,
-h3 {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
 }
 
 header {
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background-image: url("../img/3.png");
+  padding-top: 10px;
+  margin-bottom: 15px;
+}
+
+.header img {
+  height: 100%;
+  width: 100%;
+}
+
+footer {
+  background-image: url("../img/footer.png");
   background-size: cover;
-  height: 540px;
+  height: 100%;
+  width: 100%;
+  margin-top: 40px;
 }
 
-@media (max-width: 768px) {
-  @media (max-width: 768px) {
-    header {
-      padding-top: 5px;
-      background-image: url("../img/4.png");
-      height: 50vh !important; /* CAMBIADO: Usa la mitad de la pantalla, no un valor fijo */
-      min-height: 400px; /* Altura mínima para que se vea bien */
-      max-height: 520px; /* Altura máxima para no excederse */
-      background-size: cover;
-      background-position: center; /* Asegura que la imagen se centre */
-    }
-  }
-  footer {
-    width: 50%;
-    height: 300px;
-  }
-}
-
-/* Controles en línea y centrados */
-.reproductor-simple {
+/* Reproductor */
+.reproductor {
   background: rgba(255, 255, 255, 0.1); /* CAMBIADO: Transparente */
-  backdrop-filter: blur(15px); /* Aumentado para efecto "vidrio esmerilado" */
+  backdrop-filter: blur(15px);
   border-radius: 20px;
-  padding: 15px; /* Reducido para que ocupe menos espacio */
-  margin: 20px auto; /* Reducido el margen */
-  max-width: 70%; /* Ocupa casi todo el ancho en móvil */
-  width: 100%; /* Se adapta al contenedor */
-  color: white; /* CAMBIADO: Texto blanco para contraste */
+  padding: 10px;
+  margin: 15px auto;
+  max-width: 70%; /* ancho en movil */
+  width: 100%;
+  color: white;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
 }
@@ -89,155 +70,69 @@ header {
   flex-wrap: wrap;
 }
 
-/* Botón circular grande y centrado */
 .control-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  /*padding-top: 5px;*/
   font-size: 24px;
   color: white;
   transition: all 0.3s ease;
   flex-shrink: 0;
   order: 1; /* Asegura que esté primero */
 }
-
-.control-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
-}
-
-/* Ocultar icono de pausa inicialmente */
-.icon-pause {
+/* ocultar incono de pausa*/
+.pause {
   display: none;
 }
-
-/* Control de volumen centrado */
+/*control volumen*/
 .volumen-control {
   display: flex;
   align-items: center;
+  width: 40%;
+  max-width: 100%;
   gap: 12px;
-  background: rgba(240, 240, 240, 0.445);
-  padding: 8px 15px;
+  background: rgba(240, 240, 240, 0.274);
+  padding: 8px 10px;
   border-radius: 25px;
-  min-width: 180px;
   order: 2;
 }
-
-/* Input de volumen personalizado */
 .volumen-control input[type="range"] {
   flex-grow: 1;
   height: 6px;
   border-radius: 3px;
-  background: #d1d1d1;
   outline: none;
   /* ESTA ES LA LÍNEA IMPORTANTE: */
   -webkit-appearance: none; /* Elimina estilo por defecto de Chrome/Safari */
   appearance: none; /* Elimina estilo por defecto en navegadores modernos */
 }
 
-/* Estilo del "thumb" (circulo deslizador) */
-.volumen-control input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Necesario para que funcione en WebKit */
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #667eea;
-  cursor: pointer;
-  border: 2px solid white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.vol-icon {
+  width: 40px;
+  height: 40px;
+  padding-top: 10px;
+  color: #0d0d1a;
 }
-/* Información de la canción - AHORA MEJOR ESTRUCTURADO */
-.info-cancion {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-top: 15px;
-}
-
-.tiempo-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #666;
-}
-
-.tiempo {
-  font-family: "Courier New", monospace;
-  font-weight: 600;
-}
-
-.separador {
-  color: #999;
-}
-
-.nombre-container {
-  width: 100%;
-}
-
-.nombre-cancion {
-  font-size: 16px;
-  font-weight: 700;
-  color: #333;
-  display: block;
-  text-align: center;
-  padding: 8px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 5px;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  .reproductor-simple {
-    margin: 15px;
-    padding: 15px;
-    max-width: 90%;
-  }
-
-  .controles {
-    gap: 15px;
-    flex-direction: column;
-  }
-
-  .control-btn {
-    order: 0;
-    margin-bottom: 10px;
-  }
-
-  .volumen-control {
-    min-width: 100%;
-    order: 1;
-  }
-
-  .nombre-cancion {
-    font-size: 14px;
-  }
-}
-
-/* Informacion */
-
+/*seccion info*/
 .section-title {
   position: relative;
   display: inline-block;
   margin-bottom: 3rem;
   color: var(--light-color);
 }
-
 .section-title::after {
-  content: "";
+  content: " ";
   position: absolute;
   left: 50%;
-  bottom: -20%;
+  bottom: -10px;
   transform: translateX(-50%);
-  width: 300px;
+  width: 100px;
   height: 4px;
   background: linear-gradient(
     to right,
@@ -247,20 +142,111 @@ header {
   border-radius: 2px;
 }
 
-.section-regalo {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 3rem;
-  color: var(--light-color);
+/*Cards Info*/
+.card-custom {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  backdrop-filter: blur(10px);
+}
+.card-custom:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(156, 39, 176, 0.3);
+}
+.card-icon {
+  font-size: 3rem;
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+}
+.party-info {
+  font-size: 1.2rem;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+/* contador */
+.countdown-container {
+  background: linear-gradient(
+    135deg,
+    rgba(156, 39, 176, 0.2),
+    rgba(33, 150, 243, 0.2)
+  );
+  border-radius: 20px;
+  padding: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+.countdown-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.countdown-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  line-height: 1;
+}
+.countdown-label {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
+/* Slider */
+.logos {
+  width: 95%;
+  display: flex;
+  margin: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  margin-top: calc(50vh-350px);
+  padding-top: 20px;
+}
+.logos-slide {
+  animation: 50s slide infinite linear;
+}
+.img {
+  height: 400px;
+  margin: 0 40px;
+}
+.logos::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  content: " ";
+  z-index: 1;
+}
+.logos::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  content: " ";
+  z-index: 1;
+}
+/* Regalos */
+.section-regalo {
+  position: relative;
+  margin-top: 20px;
+}
 .section-regalo::after {
   content: "";
   position: absolute;
   left: 50%;
   top: -20%;
   transform: translateX(-50%);
-  width: 300px;
+  width: 250px;
   max-width: 90vw;
   height: 4px;
   background: linear-gradient(
@@ -271,210 +257,7 @@ header {
   border-radius: 2px;
 }
 
-.bg-dark-section {
-  background-color: rgba(
-    13,
-    13,
-    26,
-    0.9
-  ); /* Azul muy oscuro con 90% opacidad */
-}
-
-/* Cards */
-.card-custom {
-  background: rgb(255, 255, 255, 0.05);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  backdrop-filter: blur(10px);
-}
-
-.card-custom:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(156, 39, 176, 0.3);
-}
-
-.card-icon {
-  font-size: 3rem;
-  color: var(--secondary-color);
-  margin-bottom: 1.5rem;
-}
-
-/* Contador */
-.countdown-container {
-  background: linear-gradient(
-    135deg,
-    rgba(156, 39, 176, 0.2),
-    rgba(33, 150, 243, 0.2)
-  );
-  border-radius: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.countdown-box {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.countdown-number {
-  font-size: 3.5rem;
-  font-weight: 15px;
-  padding: 20px;
-  text-align: center;
-  color: var(--secondary-color);
-  line-height: 1;
-}
-
-.countdown-label {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Galeria de Fotos */
-.mind-carousel {
-  width: 100%;
-  max-width: 100vw;
-  height: 400px; /* Altura fija para desktop */
-  margin: 15px auto;
-  position: relative;
-  overflow: hidden; /* ¡IMPORTANTE! Esto mantiene todo dentro */
-}
-@media (max-width: 480px) {
-  .mind-carousel {
-    height: 300px; /* Aún más pequeña en pantallas muy chicas */
-  }
-}
-
-.carousel-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px; /* Espacio interno para que no toquen bordes */
-  box-sizing: border-box; /* Incluye padding en dimensiones */
-}
-
-.carousel-slide.active {
-  opacity: 1;
-}
-
-/* ESTILOS PARA DIFERENTES TIPOS DE IMÁGENES */
-.carousel-slide img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Mantiene proporciones, ajusta dentro del espacio */
-  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
-}
-
-/* Imágenes altas (600x360 - ratio 1.67:1) */
-.carousel-slide:nth-child(1) img,
-.carousel-slide:nth-child(4) img,
-.carousel-slide:nth-child(5) img {
-  width: auto;
-  height: 100%;
-  max-width: 100%;
-}
-
-/* Imágenes cuadradas (300x360 - ratio 1:1.2) */
-.carousel-slide:nth-child(2) img,
-.carousel-slide:nth-child(3) img,
-.carousel-slide:nth-child(6) img {
-  width: auto;
-  height: 80%; /* Más pequeñas para que quepan mejor */
-  max-width: 100%;
-}
-
-/* Indicadores */
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-.indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #9c27b0;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.indicator.active {
-  background: #9c27b0;
-  transform: scale(1.2);
-}
-/* boton whastapp */
-.whatsapp-fixed {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
-}
-.whatsapp-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--accent-color) 100%
-  );
-  color: white;
-  padding: 15px 25px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 400;
-  font-size: 16px;
-  box-shadow: 0 15px 30px rgba(156, 39, 176, 0.3);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-.whatsapp-btn:active {
-  transform: translateY(-1px) scale(1.02);
-}
-
-.whatsapp-btn i {
-  font-size: 24px;
-}
-
-/* datos */
-.data-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: white;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-}
-
-.data-row:last-child {
-  margin-bottom: 0;
-}
-
+/* Datos */
 .btn-datos {
   background: linear-gradient(
     135deg,
@@ -490,70 +273,102 @@ header {
   box-shadow: 0 15px 30px rgba(156, 39, 176, 0.3);
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
-
-.label {
-  font-weight: 500;
-  color: #444;
-  min-width: 50px;
-  margin-right: 10px;
+.card-body {
+  background: rgba(255, 255, 255, 0.514);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  width: 80%;
+  max-width: 95%;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
 }
-
-.value {
-  flex: 1;
-  font-family: monospace;
-  color: #222;
-  font-size: 14px;
-  word-break: break-all;
-  padding: 6px 0;
-}
-
 .copy-btn-simple {
-  background: #007bff;
-  color: white;
+  background: transparent;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
   font-size: 16px;
+}
+.copy .check {
+  width: 100%;
+  height: 100%;
+  padding-top: 6px;
+}
+
+/* whatsapp */
+.whatsapp-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.whatsapp-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
+  gap: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--accent-color) 100%
+  );
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 14px;
+  box-shadow: 0 8px 20px rgba(156, 39, 176, 0.3);
+  transition: all 0.3s ease;
+}
+.whatsapp-btn:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
-.copy-btn-simple:hover {
-  background: #0056b3;
+/* Animacion Slide*/
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
+/* RESPONSIVE ADICIONAL */
+@media (max-width: 500px) {
+  .reproductor-simple {
+    margin: 15px auto;
+    padding: 15px;
+    max-width: 90%;
+    width: 100%;
+  }
 
-.copy-btn-simple.copied {
-  background: #28a745;
-  content: "✓";
-}
-
-footer {
-  padding: 1rem;
-  background-image: url("../img/footer.png");
-  background-size: cover;
-  width: 100%;
-  height: 400px;
-}
-
-* {
-  max-width: 100vw; /* Nada puede ser más ancho que la pantalla */
-}
-
-html,
-body {
-  overflow-x: hidden; /* Oculta definitivamente el scroll horizontal */
-  width: 100%;
-}
-
-img,
-iframe,
-video,
-audio {
-  max-width: 100%; /* Asegura que multimedia sea responsive */
-  height: auto;
+  .controles {
+    gap: 15px;
+    flex-direction: column;
+  }
+  .control-btn,
+  .play,
+  .pause {
+    width: 50px;
+    height: 50px;
+    padding-top: 2px;
+  }
+  .vol {
+    width: 30px;
+    height: 25px;
+  }
+  .volumen-control {
+    width: 100%;
+    min-width: 100%;
+  }
+  .container, main, section {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
 }
